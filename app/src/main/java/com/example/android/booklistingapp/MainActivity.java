@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,9 +23,9 @@ import static android.view.View.GONE;
 public class MainActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<List<Book>> {
 
-    /** URL for earthquake data from the USGS dataset */
-    private static final String BOOK_REQUEST_URL =
-            "https://www.googleapis.com/books/v1/volumes?q=android&maxResults=3";
+    /** URL for book data from the Google Book dataset */
+    private static final String BOOK_REQUEST_URL = "";
+            //"https://www.googleapis.com/books/v1/volumes?q=dog&maxResults=30";
 
     /**
      * Constant value for the book loader ID. We can choose any integer.

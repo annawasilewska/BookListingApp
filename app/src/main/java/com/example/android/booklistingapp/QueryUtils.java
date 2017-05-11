@@ -146,9 +146,23 @@ public class QueryUtils {
                 JSONObject c = booksJSON.getJSONObject(i);
                 JSONObject volumeInfo = c.getJSONObject("volumeInfo");
                 String title = volumeInfo.getString("title");
-                String language = volumeInfo.getString("language");
+                String author = "";
+                if (volumeInfo.has("authors")) {
+                    JSONArray authorsJSON = volumeInfo.getJSONArray("authors");
+                    for (int j = 0; j < authorsJSON.length(); j++) {
+                        if ((j + 1) == authorsJSON.length()) {
+                            author = author + authorsJSON.getString(j);
+                        } else {
+                            author = author + authorsJSON.getString(j) + ", ";
+                        }
+                    }
+                } else {
+                    author = "No authors";
+                }
+                //String author = authors.getString(0);
+                //String language = volumeInfo.getString("language");
 
-                Book oneBook = new Book(title, language);
+                Book oneBook = new Book(title, author);
                 books.add(oneBook);
             }
         } catch (JSONException e) {
