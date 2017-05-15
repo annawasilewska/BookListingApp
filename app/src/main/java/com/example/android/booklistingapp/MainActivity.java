@@ -24,6 +24,29 @@ import static android.view.View.GONE;
 public class MainActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<List<Book>> {
 
+    private static final String STATE_BOOKSLIST = "StateOfBooksList";
+    private ArrayList<Book> mBookArrayList;
+    private ListView mBookListView;
+
+    /* Save values */
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putParcelableArrayList(STATE_BOOKSLIST, mBookArrayList);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    /* Restore saved values */
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            mAdapter.clear();
+            mBookArrayList = savedInstanceState.getParcelableArrayList(STATE_BOOKSLIST);
+            mAdapter.addAll(mBookArrayList);
+            mBookListView.setAdapter(mAdapter);
+        }
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
     /**
      * Constant value for the book loader ID. We can choose any integer.
      * This really only comes into play if you're using multiple loaders.
@@ -47,23 +70,34 @@ public class MainActivity extends AppCompatActivity
         //Set OnItemListener on Search Button
         Button searchButton = (Button) findViewById(R.id.search_button);
 
+        // Find a reference to the {@link ListView} in the layout
+        mBookListView = (ListView) findViewById(R.id.list);
+
+        mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
+        mBookListView.setEmptyView(mEmptyStateTextView);
+
+        mBookArrayList = new ArrayList<>();
+
+        // Create a new adapter that takes an empty list of books as input
+        mAdapter = new BookAdapter(MainActivity.this, mBookArrayList);
+
+        // Set the adapter on the {@link ListView}
+        // so the list can be populated in the user interface
+        mBookListView.setAdapter(mAdapter);
+
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loadingIndicator.setVisibility(View.VISIBLE);
 
-                // Find a reference to the {@link ListView} in the layout
-                ListView bookListView = (ListView) findViewById(R.id.list);
-
-                mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
-                bookListView.setEmptyView(mEmptyStateTextView);
+                mBookArrayList = new ArrayList<>();
 
                 // Create a new adapter that takes an empty list of books as input
-                mAdapter = new BookAdapter(MainActivity.this, new ArrayList<Book>());
+                mAdapter = new BookAdapter(MainActivity.this, mBookArrayList);
 
                 // Set the adapter on the {@link ListView}
                 // so the list can be populated in the user interface
-                bookListView.setAdapter(mAdapter);
+                mBookListView.setAdapter(mAdapter);
 
                 // Get a reference to the ConnectivityManager to check state of network connectivity
                 ConnectivityManager connMgr = (ConnectivityManager)
@@ -82,7 +116,7 @@ public class MainActivity extends AppCompatActivity
                     // because this activity implements the LoaderCallbacks interface).
                     loaderManager.initLoader(BOOK_LOADER_ID, null, MainActivity.this);
                     if(getLoaderManager().getLoader(BOOK_LOADER_ID).isStarted()){
-                        bookListView.setVisibility(GONE);
+                        //bookListView.setVisibility(GONE);
                         loadingIndicator.setVisibility(View.VISIBLE);
                         //restart it if there's one
                         getLoaderManager().restartLoader(BOOK_LOADER_ID,null,MainActivity.this);}
@@ -105,6 +139,7 @@ public class MainActivity extends AppCompatActivity
         // Find a search quote
         EditText searchQuoteEditText = (EditText) findViewById(R.id.search_quote);
         String searchQuote = searchQuoteEditText.getText().toString();
+
         // Create a new loader for the given URL
         return new BookLoader(this, searchQuote);
     }
@@ -117,7 +152,7 @@ public class MainActivity extends AppCompatActivity
         // Set empty state text to display "No books found."
         mEmptyStateTextView.setText(R.string.no_books);
 
-        // Clear the adapter of previous earthquake data
+        // Clear the adapter of previous book data
         mAdapter.clear();
 
         // If there is a valid list of {@link Book}s, then add them to the adapter's
