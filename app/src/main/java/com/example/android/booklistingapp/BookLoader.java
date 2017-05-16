@@ -2,11 +2,8 @@ package com.example.android.booklistingapp;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
-import android.util.Log;
 
 import java.util.List;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Loads a list of books by using an AsyncTask to perform the
@@ -19,7 +16,7 @@ public class BookLoader extends AsyncTaskLoader<List<Book>> {
     /**
      * Constructs a new {@linkBookLoader}.
      *
-     * @param context of the activity
+     * @param context     of the activity
      * @param searchQuote to load data from
      */
     public BookLoader(Context context, String searchQuote) {
@@ -40,6 +37,8 @@ public class BookLoader extends AsyncTaskLoader<List<Book>> {
         if (mSearchQuote == null) {
             return null;
         }
+
+        mSearchQuote = mSearchQuote.replace(" ", "+");
 
         /** URL for book data from the Google Book dataset */
         String BOOK_REQUEST_URL = "https://www.googleapis.com/books/v1/volumes?q=" + mSearchQuote + "&maxResults=30";

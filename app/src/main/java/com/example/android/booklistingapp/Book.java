@@ -11,9 +11,7 @@ public class Book implements Parcelable {
     // Title
     private String mTitle;
 
-
     public Book(String author, String title) {
-
         mAuthor = author;
         mTitle = title;
     }

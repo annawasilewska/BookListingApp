@@ -6,44 +6,34 @@
 
     <EditText
         android:id="@+id/search_quote"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="What are you looking for?" />
+        android:hint="@string/hint"
+        style="@style/edittext" />
 
     <Button
         android:id="@+id/search_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Search" />
+        android:text="@string/search_button"
+        style="@style/button" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Layout for a list of earthquakes -->
+        <!-- Layout for a list of books -->
         <ListView
             android:id="@+id/list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:dividerHeight="5dp"
-            android:orientation="vertical" />
+            style="@style/listview" />
 
         <!-- Empty view is only visible when the list has no items. -->
         <TextView
             android:id="@+id/empty_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textAppearance="?android:textAppearanceMedium" />
+            style="@style/empty_view" />
 
-        <!-- Loading indicator is only shown before the first load -->
+        <!-- Loading indicator is only shown before the load -->
         <ProgressBar
             android:id="@+id/progress_bar"
             style="@style/Widget.AppCompat.ProgressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true" />
-
     </RelativeLayout>
 </LinearLayout>

@@ -18,10 +18,12 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 /**
- * Helper methods related to requesting and receiving earthquake data from Google Books API.
+ * Helper methods related to requesting and receiving book data from Google Books API.
  */
 public class QueryUtils {
-    /** Tag for the log messages */
+    /**
+     * Tag for the log messages
+     */
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
 
     /**
@@ -159,16 +161,14 @@ public class QueryUtils {
                 } else {
                     author = "No authors";
                 }
-                //String author = authors.getString(0);
-                //String language = volumeInfo.getString("language");
 
-                Book oneBook = new Book(title, author);
+                Book oneBook = new Book(author, title);
                 books.add(oneBook);
             }
         } catch (JSONException e) {
             Log.e(LOG_TAG, "Problem parsing the book JSON results", e);
         }
-        // Return the list of earthquakes
+        // Return the list of books
         return books;
     }
 }

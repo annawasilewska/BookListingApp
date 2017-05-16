@@ -7,16 +7,12 @@
 
     <TextView
         android:id="@+id/author"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         tools:text="Author"
-        android:padding="10dp"/>
+        style="@style/textview_author" />
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         tools:text="Title"
-        android:padding="10dp"/>
+        style="@style/textview_title" />
 
 </LinearLayout>

@@ -20,7 +20,7 @@ public class BookAdapter extends ArrayAdapter<Book> {
     public View getView(int position, View convertView, ViewGroup parent) {
         // Check if the existing view is being reused, otherwise inflate the view
         View listItemView = convertView;
-        if(listItemView == null) {
+        if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(
                     R.layout.list_item, parent, false);
         }
@@ -28,16 +28,14 @@ public class BookAdapter extends ArrayAdapter<Book> {
         // Get the {@link Book} object located at this position in the list
         Book currentBook = getItem(position);
 
-        // Find the TextView in the list_item.xml layout with the ID author
-        TextView author = (TextView) listItemView.findViewById(R.id.author);
-
-        // Get the Author Name from the current Book object and
+        // Find the TextView in the list_item.xml layout with the ID author and
         // set this text on the author TextView
+        TextView author = (TextView) listItemView.findViewById(R.id.author);
         author.setText(currentBook.getAuthor());
 
-        // Find the TextView in the list_item.xml layout with the ID title
+        // Find the TextView in the list_item.xml layout with the ID title and
+        // set this text on the title TextView
         TextView title = (TextView) listItemView.findViewById(R.id.title);
-
         title.setText(currentBook.getTitle());
 
         // Return the whole list item layout (containing 2 TextViews)
