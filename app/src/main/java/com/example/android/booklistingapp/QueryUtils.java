@@ -1,15 +1,10 @@
 package com.example.android.booklistingapp;
 
-import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,8 +14,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * Helper methods related to requesting and receiving book data from Google Books API.
@@ -35,6 +28,8 @@ public class QueryUtils {
     private static final String KEY_VOLUMEINFO = "volumeInfo";
     private static final String KEY_AUTHORS = "authors";
     private static final String KEY_TITLE = "title";
+
+    public static String errorMessage = null;
 
     /**
      * Query the Google Books API and return an {@link ArrayList<Book>} object to represent a single book.
@@ -160,7 +155,7 @@ public class QueryUtils {
                 JSONObject volumeInfo = c.getJSONObject(KEY_VOLUMEINFO);
                 String title = volumeInfo.getString(KEY_TITLE);
                 String author = "";
-                //if (volumeInfo.has(KEY_AUTHORS)) {
+                if (volumeInfo.has(KEY_AUTHORS)) {
                     JSONArray authorsJSON = volumeInfo.getJSONArray(KEY_AUTHORS);
                     for (int j = 0; j < authorsJSON.length(); j++) {
                         if ((j + 1) == authorsJSON.length()) {
@@ -169,21 +164,17 @@ public class QueryUtils {
                             author = author + authorsJSON.getString(j) + ", ";
                         }
                     }
-                //} else {
-                //    author = "No authors";
-                //}
+                } else {
+                    author = "No authors";
+                }
                 Book oneBook = new Book(author, title);
                 books.add(oneBook);
             }
         } catch (JSONException e) {
             Log.e(LOG_TAG, "Problem parsing the book JSON results", e);
-            showToast(String.valueOf(R.string.json_exception));
-            ;
+            errorMessage = String.valueOf(e);
         }
         // Return the list of books
         return books;
-    }
-    public static void showToast(String text) {
-        Toast.makeText(App.getAppContext(), text, Toast.LENGTH_LONG).show();
     }
 }

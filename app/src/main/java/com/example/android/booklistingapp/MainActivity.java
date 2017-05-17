@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,9 @@ public class MainActivity extends AppCompatActivity
     private static final int BOOK_LOADER_ID = 1;
     private ArrayList<Book> mBookArrayList;
     private ListView mBookListView;
+
+    public static Context mContext;
+
     /**
      * Adapter for the list of books
      */
@@ -65,6 +69,8 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mContext = getApplicationContext();
 
         loadingIndicator = (ProgressBar) findViewById(R.id.progress_bar);
         loadingIndicator.setVisibility(GONE);
@@ -159,6 +165,11 @@ public class MainActivity extends AppCompatActivity
 
         // Set empty state text to display "No books found."
         mEmptyStateTextView.setText(R.string.no_books);
+
+        if (QueryUtils.errorMessage != null) {
+            Toast.makeText(MainActivity.mContext, QueryUtils.errorMessage, Toast.LENGTH_SHORT).show();
+            QueryUtils.errorMessage = null;
+        }
     }
 
     @Override

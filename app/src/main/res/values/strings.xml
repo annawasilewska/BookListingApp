@@ -4,5 +4,4 @@
     <string name="no_books">Please enter correct search word</string>
     <string name="hint">What are you looking for?</string>
     <string name="search_button">Search</string>
-    <string name="json_exception">Problem parsing the book JSON results</string>
 </resources>
