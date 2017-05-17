@@ -1,7 +1,10 @@
 package com.example.android.booklistingapp;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,6 +20,8 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+
 /**
  * Helper methods related to requesting and receiving book data from Google Books API.
  */
@@ -25,6 +30,11 @@ public class QueryUtils {
      * Tag for the log messages
      */
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
+
+    private static final String KEY_ITEMS = "items";
+    private static final String KEY_VOLUMEINFO = "volumeInfo";
+    private static final String KEY_AUTHORS = "authors";
+    private static final String KEY_TITLE = "title";
 
     /**
      * Query the Google Books API and return an {@link ArrayList<Book>} object to represent a single book.
@@ -35,6 +45,7 @@ public class QueryUtils {
 
         // Perform HTTP request to the URL and receive a JSON response back
         String jsonResponse = null;
+
         try {
             jsonResponse = makeHttpRequest(url);
         } catch (IOException e) {
@@ -142,15 +153,15 @@ public class QueryUtils {
             // build up a list of Book objects with the corresponding data.
             JSONObject jsonObj = new JSONObject(bookJSON);
             // Getting JSON Array node
-            JSONArray booksJSON = jsonObj.getJSONArray("items");
+            JSONArray booksJSON = jsonObj.getJSONArray(KEY_ITEMS);
             // looping through all books
             for (int i = 0; i < booksJSON.length(); i++) {
                 JSONObject c = booksJSON.getJSONObject(i);
-                JSONObject volumeInfo = c.getJSONObject("volumeInfo");
-                String title = volumeInfo.getString("title");
+                JSONObject volumeInfo = c.getJSONObject(KEY_VOLUMEINFO);
+                String title = volumeInfo.getString(KEY_TITLE);
                 String author = "";
-                if (volumeInfo.has("authors")) {
-                    JSONArray authorsJSON = volumeInfo.getJSONArray("authors");
+                //if (volumeInfo.has(KEY_AUTHORS)) {
+                    JSONArray authorsJSON = volumeInfo.getJSONArray(KEY_AUTHORS);
                     for (int j = 0; j < authorsJSON.length(); j++) {
                         if ((j + 1) == authorsJSON.length()) {
                             author = author + authorsJSON.getString(j);
@@ -158,17 +169,21 @@ public class QueryUtils {
                             author = author + authorsJSON.getString(j) + ", ";
                         }
                     }
-                } else {
-                    author = "No authors";
-                }
-
+                //} else {
+                //    author = "No authors";
+                //}
                 Book oneBook = new Book(author, title);
                 books.add(oneBook);
             }
         } catch (JSONException e) {
             Log.e(LOG_TAG, "Problem parsing the book JSON results", e);
+            showToast(String.valueOf(R.string.json_exception));
+            ;
         }
         // Return the list of books
         return books;
+    }
+    public static void showToast(String text) {
+        Toast.makeText(App.getAppContext(), text, Toast.LENGTH_LONG).show();
     }
 }

@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Book Listing App</string>
-    <string name="no_internet">No internet</string>
+    <string name="no_internet">No internet connection</string>
     <string name="no_books">Please enter correct search word</string>
     <string name="hint">What are you looking for?</string>
     <string name="search_button">Search</string>
+    <string name="json_exception">Problem parsing the book JSON results</string>
 </resources>

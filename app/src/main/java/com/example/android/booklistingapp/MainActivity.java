@@ -1,23 +1,23 @@
 package com.example.android.booklistingapp;
 
-        import android.app.LoaderManager;
-        import android.content.Context;
-        import android.content.Loader;
-        import android.net.ConnectivityManager;
-        import android.net.NetworkInfo;
-        import android.support.v7.app.AppCompatActivity;
-        import android.os.Bundle;
-        import android.view.View;
-        import android.widget.Button;
-        import android.widget.EditText;
-        import android.widget.ListView;
-        import android.widget.ProgressBar;
-        import android.widget.TextView;
+import android.app.LoaderManager;
+import android.content.Context;
+import android.content.Loader;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-        import java.util.ArrayList;
-        import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
-        import static android.view.View.GONE;
+import static android.view.View.GONE;
 
 public class MainActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<List<Book>> {
@@ -101,8 +101,7 @@ public class MainActivity extends AppCompatActivity
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Hide empty state TextView and show loading indicator
-                mEmptyStateTextView.setVisibility(GONE);
+                // Show loading indicator
                 loadingIndicator.setVisibility(View.VISIBLE);
 
                 // Get a reference to the ConnectivityManager to check state of network connectivity
@@ -124,7 +123,7 @@ public class MainActivity extends AppCompatActivity
                     // Otherwise, display error
                     // First, hide loading indicator so error message will be visible
                     loadingIndicator.setVisibility(GONE);
-
+                    mAdapter.clear();
                     // Update empty state with no connection error message
                     mEmptyStateTextView.setText(R.string.no_internet);
                 }

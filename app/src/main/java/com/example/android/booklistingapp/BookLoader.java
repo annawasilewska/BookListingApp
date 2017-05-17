@@ -13,6 +13,8 @@ public class BookLoader extends AsyncTaskLoader<List<Book>> {
 
     private String mSearchQuote;
 
+    private static final String BASE_URL = "https://www.googleapis.com/books/v1/volumes?q=";
+
     /**
      * Constructs a new {@linkBookLoader}.
      *
@@ -41,7 +43,7 @@ public class BookLoader extends AsyncTaskLoader<List<Book>> {
         mSearchQuote = mSearchQuote.replace(" ", "+");
 
         /** URL for book data from the Google Book dataset */
-        String BOOK_REQUEST_URL = "https://www.googleapis.com/books/v1/volumes?q=" + mSearchQuote + "&maxResults=30";
+        String BOOK_REQUEST_URL = BASE_URL + mSearchQuote + "&maxResults=30";
         // Perform the network request, parse the response, and extract a list of books.
         List<Book> books = QueryUtils.fetchBookData(BOOK_REQUEST_URL);
         return books;
